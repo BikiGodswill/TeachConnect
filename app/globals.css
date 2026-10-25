@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-white text-navy-900 font-body antialiased; }
+  h1, h2, h3, h4 { @apply font-heading; }
+  :focus-visible { @apply outline-none ring-2 ring-teal-500 ring-offset-2; }
+  ::selection { @apply bg-teal-500 text-white; }
+}
+
+@layer components {
+  .btn { @apply inline-flex h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-semibold transition duration-200 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60; }
+  .btn-primary { @apply btn bg-navy-gradient text-white shadow-card hover:-translate-y-0.5 hover:shadow-float; }
+  .btn-teal { @apply btn bg-brand-gradient text-white shadow-glow hover:-translate-y-0.5 hover:brightness-110; }
+  .btn-ghost { @apply btn border border-navy-900/20 bg-white/60 text-navy-900 backdrop-blur hover:border-teal-500 hover:bg-sky-50; }
+  .card { @apply rounded-lg bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-cardHover; }
+  .section { @apply mx-auto max-w-7xl px-5 py-16 md:py-20; }
+  .section-title { @apply relative inline-block text-3xl font-extrabold md:text-4xl; }
+  .gradient-text { @apply bg-brand-gradient bg-clip-text text-transparent; }
+  .skeleton { background: linear-gradient(90deg, #eef1f6 25%, #f8f9fc 37%, #eef1f6 63%); background-size: 800px 100%; @apply animate-shimmer; }
+  /* hand-drawn yellow underline seen in both references */
+  .squiggle::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -10px; height: 10px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10' preserveAspectRatio='none'%3E%3Cpath d='M2 7 Q 30 1 60 5 T 118 3' fill='none' stroke='%23FFC53D' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  }
+}
+
+/* Respect users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
