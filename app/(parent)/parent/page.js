@@ -17,7 +17,7 @@ export default async function ParentHome() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-extrabold">Hello, {profile.full_name.split(' ')[0]} 👋</h1>
+        <h1 className="text-3xl font-extrabold">Hello, {(profile?.full_name || 'there').split(' ')[0]} 👋</h1>
         <p className="mt-1 text-ink-600">Manage your children&apos;s lessons in one place.</p>
       </div>
 

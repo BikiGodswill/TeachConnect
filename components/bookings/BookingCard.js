@@ -74,6 +74,7 @@ export default function BookingCard({ b, viewer }) {
           <><Btn kind="teal" onClick={() => series(true)}>Accept all {b.series_pending}</Btn><Btn kind="ghost" onClick={() => confirm(`Decline all ${b.series_pending} lessons?`) && series(false)}>Decline all</Btn></>
         )}
         {live && <Link href={`/lesson/${b.id}`} className="btn-teal h-10 px-5 text-xs"><HiArrowTopRightOnSquare size={16} /> {b.lesson_type === 'PHYSICAL' ? 'Open lesson' : 'Lesson details'}</Link>}
+        {['CONFIRMED', 'IN_PROGRESS'].includes(b.status) && b.lesson_type === 'ONLINE' && <Link href={`/classroom/${b.id}`} className="btn-teal h-10 px-5 text-xs"><HiVideoCamera size={16} /> Join classroom</Link>}
         {isTeacher && b.status === 'ACCEPTED' && offPlatform && <Btn onClick={() => status('confirm')}>Confirm lesson</Btn>}
         {isTeacher && b.status === 'ACCEPTED' && !offPlatform && <p className="self-center text-xs text-ink-600">Waiting for the student to pay in the app.</p>}
         {isTeacher && b.status === 'CONFIRMED' && b.lesson_type === 'ONLINE' && <Btn onClick={() => status('start')}>Start lesson</Btn>}

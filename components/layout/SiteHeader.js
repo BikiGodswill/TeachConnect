@@ -12,6 +12,8 @@ const links = [
   { href: '/#subjects', label: 'Subjects' },
   { href: '/#how-it-works', label: 'How It Works' },
   { href: '/become-a-teacher', label: 'Become a Teacher' },
+  { href: '/courses', label: 'Courses' },
+  { href: '/jobs', label: 'Jobs' },
   { href: '/resources', label: 'Resources' },
 ];
 

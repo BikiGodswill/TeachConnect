@@ -20,7 +20,7 @@ export default async function StudentHome() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-extrabold">Welcome back, {profile.full_name.split(' ')[0]} 👋</h1>
+        <h1 className="text-3xl font-extrabold">Welcome back, {(profile?.full_name || 'there').split(' ')[0]} 👋</h1>
         <p className="mt-1 text-ink-600">Here is what is happening with your learning.</p>
       </div>
 

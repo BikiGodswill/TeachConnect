@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { HiBell } from 'react-icons/hi2';
 import toast from 'react-hot-toast';
 import { createClient } from '@/lib/supabase/client';
@@ -12,7 +13,7 @@ export default function NotificationBell({ userId }) {
   useEffect(() => {
     const supabase = createClient();
     let alive = true;
-    supabase.from('notifications').select('id,title,body,read_at,created_at').order('created_at', { ascending: false }).limit(15)
+    supabase.from('notifications').select('id,type,title,body,data,read_at,created_at').order('created_at', { ascending: false }).limit(15)
       .then(({ data }) => { if (alive && data) setItems(data); });
     const channel = supabase.channel(`notif-${userId}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${userId}` },
@@ -39,13 +40,29 @@ export default function NotificationBell({ userId }) {
         <div className="absolute right-0 z-50 mt-2 w-80 max-w-[90vw] rounded-lg bg-white p-2 shadow-float">
           {items.length === 0 && <p className="p-4 text-sm text-ink-600">No notifications yet.</p>}
           {items.map((n) => (
-            <div key={n.id} className="rounded-md p-3 hover:bg-sky-50">
+            <Wrapper key={n.id} href={linkFor(n)} onNavigate={() => setOpen(false)}>
               <p className="text-sm font-bold">{n.title}</p>
               {n.body && <p className="text-xs text-ink-600">{n.body}</p>}
-            </div>
+            </Wrapper>
           ))}
         </div>
       )}
     </div>
   );
+}
+
+// Where a notification should take the person (null = no link). Only our own known id types are used.
+function linkFor(n) {
+  const d = n.data || {};
+  if (d.assignment_id) return `/learning/assignment/${d.assignment_id}`;
+  if (d.attempt_id) return `/learning/test/${d.attempt_id}`;
+  if (d.certificate_id) return `/learning/certificate/${d.certificate_id}`;
+  if (d.job_id) return n.type === 'APPLICATION' ? '/dashboard' : '/jobs';
+  if (d.booking_id) return `/lesson/${d.booking_id}`;
+  return null;
+}
+
+function Wrapper({ href, onNavigate, children }) {
+  const cls = 'block rounded-md p-3 hover:bg-sky-50';
+  return href ? <Link href={href} onClick={onNavigate} className={cls}>{children}</Link> : <div className={cls}>{children}</div>;
 }

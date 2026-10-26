@@ -1,12 +1,14 @@
 'use client';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { HiArrowRightOnRectangle } from 'react-icons/hi2';
+import { HiArrowRightOnRectangle, HiHome, HiMagnifyingGlass, HiBolt, HiCalendarDays, HiChatBubbleLeftRight, HiHeart, HiUser, HiInboxArrowDown, HiWallet, HiChartBar, HiGift, HiStar, HiUsers, HiShieldCheck, HiScale, HiBanknotes, HiShieldExclamation, HiSquares2X2, HiBookOpen, HiBriefcase, HiBuildingLibrary, HiCreditCard, HiAcademicCap, HiSparkles, HiClipboardDocumentList, HiPencilSquare } from 'react-icons/hi2';
 import Logo from '@/components/ui/Logo';
 import { createClient } from '@/lib/supabase/client';
 import NotificationBell from '@/components/dashboard/NotificationBell';
 
-// items: [{ href, label, icon: Component }]
+const ICONS = { home: HiHome, search: HiMagnifyingGlass, bolt: HiBolt, calendar: HiCalendarDays, chat: HiChatBubbleLeftRight, heart: HiHeart, user: HiUser, inbox: HiInboxArrowDown, wallet: HiWallet, chart: HiChartBar, gift: HiGift, star: HiStar, users: HiUsers, shield: HiShieldCheck, scale: HiScale, bank: HiBanknotes, alert: HiShieldExclamation, book: HiBookOpen, briefcase: HiBriefcase, school: HiBuildingLibrary, card: HiCreditCard, academic: HiAcademicCap, sparkles: HiSparkles, tasks: HiClipboardDocumentList, test: HiPencilSquare };
+const iconOf = (k) => ICONS[k] || HiSquares2X2;
+// items: [{ href, label, icon: 'home' | ... (string key), mobile? }]
 export default function DashboardShell({ items, user, profileHref, children }) {
   const path = usePathname();
   const router = useRouter();
@@ -23,12 +25,12 @@ export default function DashboardShell({ items, user, profileHref, children }) {
       <aside className="sticky top-0 hidden h-screen flex-col border-r border-ink-200 bg-white p-5 lg:flex">
         <Logo />
         <nav className="mt-10 flex-1 space-y-1">
-          {items.map(({ href, label, icon: Icon }) => (
+          {items.map(({ href, label, icon }) => { const Icon = iconOf(icon); return (
             <Link key={href} href={href}
               className={`flex items-center gap-3 rounded-full px-4 py-3 text-sm font-semibold transition ${active(href) ? 'bg-navy-900 text-white' : 'text-ink-600 hover:bg-sky-50'}`}>
               <Icon size={20} /> {label}
             </Link>
-          ))}
+          ); })}
         </nav>
         <button onClick={logout} className="flex items-center gap-3 rounded-full px-4 py-3 text-sm font-semibold text-ink-600 hover:bg-sky-50">
           <HiArrowRightOnRectangle size={20} /> Log out
@@ -40,7 +42,7 @@ export default function DashboardShell({ items, user, profileHref, children }) {
           <div className="lg:hidden"><Logo /></div>
           <p className="hidden text-sm text-ink-600 lg:block">Hello, <span className="font-bold text-navy-900">{user.full_name}</span></p>
           <div className="flex items-center gap-3">
-            <NotificationBell userId={user.id} />
+            <NotificationBell userId={user.id} role={user.role} />
             {profileHref && (
               <Link href={profileHref} aria-label="My profile" className="grid h-10 w-10 place-items-center rounded-full bg-navy-900 text-sm font-bold text-white lg:hidden">
                 {(user.full_name || '?').trim().charAt(0).toUpperCase()}
@@ -54,11 +56,11 @@ export default function DashboardShell({ items, user, profileHref, children }) {
 
       {/* mobile bottom navigation */}
       <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-ink-200 bg-white px-1 py-2 lg:hidden">
-        {items.filter((i) => i.mobile !== false).slice(0, 5).map(({ href, label, icon: Icon }) => (
+        {items.filter((i) => i.mobile !== false).slice(0, 5).map(({ href, label, icon }) => { const Icon = iconOf(icon); return (
           <Link key={href} href={href} className={`flex flex-1 flex-col items-center gap-0.5 rounded-lg py-1 text-[11px] font-semibold ${active(href) ? 'text-teal-600' : 'text-ink-400'}`}>
             <Icon size={22} /> {label}
           </Link>
-        ))}
+        ); })}
       </nav>
     </div>
   );

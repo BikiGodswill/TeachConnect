@@ -6,7 +6,7 @@ export const metadata = { title: 'Profile — Teacher Connect' };
 export default async function ParentProfile() {
   const { db, user, profile } = await getSessionUser();
   const [{ data: u }, { data: pp }] = await Promise.all([
-    db.from('users').select('phone').eq('id', user.id).single(),
+    db.from('users').select('phone').eq('id', user.id).maybeSingle(),
     db.from('parent_profiles').select('city').eq('id', user.id).maybeSingle(),
   ]);
   return (

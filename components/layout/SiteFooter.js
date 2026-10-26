@@ -4,7 +4,7 @@ import { FaXTwitter } from 'react-icons/fa6';
 import Logo from '@/components/ui/Logo';
 
 const cols = [
-  { title: 'Teacher Connect', links: [['About', '/about'], ['Find Teachers', '/teachers'], ['Become a Teacher', '/become-a-teacher'], ['How It Works', '/#how-it-works']] },
+  { title: 'Teacher Connect', links: [['About', '/about'], ['Find Teachers', '/teachers'], ['Become a Teacher', '/become-a-teacher'], ['How It Works', '/#how-it-works'], ['Courses', '/courses'], ['Jobs', '/jobs'], ['Register your school', '/become-a-school'], ['Verify a certificate', '/verify']] },
   { title: 'Support', links: [['Help Center', '/help'], ['Contact', '/contact'], ['Safety', '/safety']] },
   { title: 'Legal', links: [['Privacy', '/privacy'], ['Terms', '/terms'], ['Refund Policy', '/refunds']] },
 ];

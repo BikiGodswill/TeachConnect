@@ -10,7 +10,7 @@ export default async function TeacherHome() {
   const today = new Date().toISOString().slice(0, 10);
 
   const [{ data: tp }, { data: wallet }, { data: pending }, { data: todays }, { data: upcoming }, { data: series }] = await Promise.all([
-    db.from('teacher_profiles').select('rating_avg,rating_count,verification,completed_lessons,hourly_rate,online_rate,physical_rate,bio').eq('id', user.id).single(),
+    db.from('teacher_profiles').select('rating_avg,rating_count,verification,completed_lessons,hourly_rate,online_rate,physical_rate,bio').eq('id', user.id).maybeSingle(),
     db.from('wallets').select('*').eq('teacher_id', user.id).maybeSingle(),
     db.from('booking_details').select('id').eq('teacher_id', user.id).eq('status', 'REQUESTED'),
     db.from('booking_details').select('id').eq('teacher_id', user.id).eq('scheduled_date', today).in('status', ['CONFIRMED', 'IN_PROGRESS', 'ACCEPTED']),
@@ -27,7 +27,7 @@ export default async function TeacherHome() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-extrabold">Hello, {profile.full_name.split(' ')[0]}</h1>
+        <h1 className="text-3xl font-extrabold">Hello, {(profile?.full_name || 'there').split(' ')[0]}</h1>
         <p className="mt-1 text-ink-600">Verification: <b>{(tp?.verification || 'NOT_SUBMITTED').replace('_', ' ')}</b></p>
       </div>
 

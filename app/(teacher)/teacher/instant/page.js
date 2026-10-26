@@ -6,7 +6,7 @@ export const metadata = { title: 'Instant requests — Teacher Connect' };
 export default async function TeacherInstant() {
   const { db, user } = await getSessionUser();
   const [{ data: tp }, { data: base }] = await Promise.all([
-    db.from('teacher_profiles').select('available_until,verification').eq('id', user.id).single(),
+    db.from('teacher_profiles').select('available_until,verification').eq('id', user.id).maybeSingle(),
     db.from('teacher_base_locations').select('teacher_id').eq('teacher_id', user.id).maybeSingle(),
   ]);
   return (
