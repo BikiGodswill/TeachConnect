@@ -2,6 +2,7 @@ import { getSessionUser } from '@/lib/supabase/auth-server';
 import TeacherProfileForm from '@/components/profile/TeacherProfileForm';
 import BaseLocationCard from '@/components/profile/BaseLocationCard';
 import VerificationPanel from '@/components/profile/VerificationPanel';
+import EmailPrefToggle from '@/components/forms/EmailPrefToggle';
 
 export const metadata = { title: 'Profile — Teacher Connect' };
 
@@ -23,6 +24,7 @@ export default async function TeacherProfile() {
       <BaseLocationCard has={!!base} />
       <TeacherProfileForm userId={user.id} user={{ ...profile, phone: u?.phone }} tp={tp || {}} allSubjects={allSubjects || []}
         selected={(mine || []).map((m) => m.subject_id)} quals={quals || []} />
+      <EmailPrefToggle />
     </div>
   );
 }
