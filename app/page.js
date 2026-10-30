@@ -6,7 +6,7 @@ import SubjectGrid from '@/components/home/SubjectGrid';
 import { TopTeachers, NearbyTeachers, HowItWorks, TwoSidedCta, WhyUs, LearningJourney, Resources } from '@/components/home/Sections';
 import { getSubjectsWithCounts, getTopTeachers, getPlatformStats } from '@/services/teachers';
 
-export const revalidate = 300;
+export const revalidate = 30;
 
 export default async function HomePage() {
   const [subjects, teachers, stats] = await Promise.all([getSubjectsWithCounts(), getTopTeachers(8), getPlatformStats()]);

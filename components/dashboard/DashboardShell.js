@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { HiArrowRightOnRectangle, HiHome, HiMagnifyingGlass, HiBolt, HiCalendarDays, HiChatBubbleLeftRight, HiHeart, HiUser, HiInboxArrowDown, HiWallet, HiChartBar, HiGift, HiStar, HiUsers, HiShieldCheck, HiScale, HiBanknotes, HiShieldExclamation, HiSquares2X2, HiBookOpen, HiBriefcase, HiBuildingLibrary, HiCreditCard, HiAcademicCap, HiSparkles, HiClipboardDocumentList, HiPencilSquare } from 'react-icons/hi2';
 import Logo from '@/components/ui/Logo';
 import { createClient } from '@/lib/supabase/client';
+import Avatar from '@/components/ui/Avatar';
 import NotificationBell from '@/components/dashboard/NotificationBell';
 
 const ICONS = { home: HiHome, search: HiMagnifyingGlass, bolt: HiBolt, calendar: HiCalendarDays, chat: HiChatBubbleLeftRight, heart: HiHeart, user: HiUser, inbox: HiInboxArrowDown, wallet: HiWallet, chart: HiChartBar, gift: HiGift, star: HiStar, users: HiUsers, shield: HiShieldCheck, scale: HiScale, bank: HiBanknotes, alert: HiShieldExclamation, book: HiBookOpen, briefcase: HiBriefcase, school: HiBuildingLibrary, card: HiCreditCard, academic: HiAcademicCap, sparkles: HiSparkles, tasks: HiClipboardDocumentList, test: HiPencilSquare };
@@ -40,13 +41,14 @@ export default function DashboardShell({ items, user, profileHref, children }) {
       <div className="pb-24 lg:pb-0">
         <header className="flex items-center justify-between border-b border-ink-200 bg-white px-5 py-4">
           <div className="lg:hidden"><Logo /></div>
-          <p className="hidden text-sm text-ink-600 lg:block">Hello, <span className="font-bold text-navy-900">{user.full_name}</span></p>
+          <div className="hidden items-center gap-3 lg:flex">
+            {profileHref ? <Link href={profileHref} aria-label="My profile"><Avatar url={user.avatar_url} name={user.full_name} size={36} /></Link> : <Avatar url={user.avatar_url} name={user.full_name} size={36} />}
+            <p className="text-sm text-ink-600">Hello, <span className="font-bold text-navy-900">{user.full_name}</span></p>
+          </div>
           <div className="flex items-center gap-3">
             <NotificationBell userId={user.id} role={user.role} />
             {profileHref && (
-              <Link href={profileHref} aria-label="My profile" className="grid h-10 w-10 place-items-center rounded-full bg-navy-900 text-sm font-bold text-white lg:hidden">
-                {(user.full_name || '?').trim().charAt(0).toUpperCase()}
-              </Link>
+              <Link href={profileHref} aria-label="My profile" className="lg:hidden"><Avatar url={user.avatar_url} name={user.full_name} size={40} /></Link>
             )}
             <button onClick={logout} aria-label="Log out" className="grid h-10 w-10 place-items-center rounded-full bg-sky-50 lg:hidden"><HiArrowRightOnRectangle size={20} /></button>
           </div>

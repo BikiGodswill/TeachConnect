@@ -1,6 +1,7 @@
 import { getSessionUser } from '@/lib/supabase/auth-server';
 import ParentProfileForm from '@/components/profile/ParentProfileForm';
 import EmailPrefToggle from '@/components/forms/EmailPrefToggle';
+import ProfileHeader from '@/components/profile/ProfileHeader';
 
 export const metadata = { title: 'Profile — Teacher Connect' };
 
@@ -13,6 +14,7 @@ export default async function ParentProfile() {
   return (
     <div className="max-w-2xl space-y-6">
       <h1 className="text-3xl font-extrabold">Profile</h1>
+      <ProfileHeader userId={user.id} name={profile?.full_name} url={profile?.avatar_url} />
       <ParentProfileForm userId={user.id} email={user.email} user={{ ...profile, phone: u?.phone }} city={pp?.city || ''} />
       <EmailPrefToggle />
     </div>

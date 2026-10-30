@@ -20,7 +20,7 @@ export async function POST(req) {
     // amount comes from the database row, never from the browser
     const origin = new URL(req.url).origin;
     const checkout = await getProvider().createCheckout({
-      paymentId: b.payment_id, amount: b.amount, currency: b.currency, returnUrl: `${origin}/student/bookings`,
+      paymentId: b.payment_id, amount: b.amount, currency: b.currency, returnUrl: `${origin}/payments/return?booking=${bookingId}`, email: user.email,
     });
     const admin = createAdminClient();
     await admin.from('payments').update({ payment_status: 'PENDING', transaction_reference: checkout.reference, provider: process.env.PAYMENT_PROVIDER || 'mock' }).eq('id', b.payment_id);

@@ -1,10 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { createClient } from '@/lib/supabase/client';
 import { friendlyError } from '@/lib/errors';
+import { FcGoogle } from 'react-icons/fc';
 
 // Admins are created in SQL; schools arrive in a later phase.
 const ROLES = [
@@ -19,6 +20,7 @@ export default function AuthForm({ mode }) {
   const [busy, setBusy] = useState(false);
   const [role, setRole] = useState(['TEACHER', 'PARENT'].includes(params.get('role')?.toUpperCase()) ? params.get('role').toUpperCase() : 'STUDENT');
   const isSignup = mode === 'signup';
+  useEffect(() => { if (params.get('error') === 'oauth') toast.error('Google sign-in did not complete. Please try again.'); }, [params]);
 
   async function submit(e) {
     e.preventDefault();
@@ -49,6 +51,19 @@ export default function AuthForm({ mode }) {
     } finally { setBusy(false); }
   }
 
+  async function google() {
+    setBusy(true);
+    const next = params.get('next');
+    const q = new URLSearchParams();
+    if (isSignup) q.set('role', role);
+    if (next && next.startsWith('/') && !next.startsWith('//')) q.set('next', next);
+    const { error } = await createClient().auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${location.origin}/auth/callback${q.toString() ? `?${q}` : ''}` },
+    });
+    if (error) { setBusy(false); toast.error(friendlyError(error)); }
+  }
+
   const input = 'h-12 w-full rounded-md border border-ink-200 bg-white px-4 text-sm outline-none focus:border-teal-500';
   return (
     <form onSubmit={submit} className="w-full max-w-md space-y-4 rounded-xl bg-white p-8 shadow-float">
@@ -56,6 +71,11 @@ export default function AuthForm({ mode }) {
         <h1 className="text-2xl font-extrabold">{isSignup ? 'Create your account' : 'Welcome back'}</h1>
         <p className="mt-1 text-sm text-ink-600">{isSignup ? "Find a teacher, or start teaching — it's free to join." : 'Log in to continue your learning journey.'}</p>
       </div>
+      <button type="button" onClick={google} disabled={busy}
+        className="flex h-12 w-full items-center justify-center gap-3 rounded-md border border-ink-200 bg-white text-sm font-bold transition hover:bg-ink-50 disabled:opacity-60">
+        <FcGoogle size={22} /> Continue with Google
+      </button>
+      <div className="flex items-center gap-3 text-xs text-ink-600"><span className="h-px flex-1 bg-ink-200" />or use email<span className="h-px flex-1 bg-ink-200" /></div>
       {isSignup && (
         <>
           <div className="grid grid-cols-3 gap-2">

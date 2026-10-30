@@ -39,8 +39,12 @@ export default async function TeacherProfilePage({ params }) {
     <>
       <SiteHeader />
       <main className="bg-sky-50 pb-28 lg:pb-12">
-        <section className="bg-gradient-to-br from-lavender-50 via-white to-sky-50">
-          <div className="mx-auto flex max-w-7xl flex-col gap-8 px-5 py-12 md:flex-row md:items-center">
+        <section className="relative bg-gradient-to-br from-lavender-50 via-white to-sky-50">
+          {card.cover_url && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={card.cover_url} alt="" className="h-40 w-full object-cover sm:h-64" />
+          )}
+          <div className={`mx-auto flex max-w-7xl flex-col gap-8 px-5 md:flex-row md:items-center ${card.cover_url ? '-mt-16 pb-10 md:-mt-20' : 'py-12'}`}>
             <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-full bg-sky-100 shadow-float">
               {card.avatar_url
                 ? <Image src={card.avatar_url} alt={card.full_name} fill className="object-cover" sizes="160px" />

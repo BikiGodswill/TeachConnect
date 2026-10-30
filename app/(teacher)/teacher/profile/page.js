@@ -3,6 +3,7 @@ import TeacherProfileForm from '@/components/profile/TeacherProfileForm';
 import BaseLocationCard from '@/components/profile/BaseLocationCard';
 import VerificationPanel from '@/components/profile/VerificationPanel';
 import EmailPrefToggle from '@/components/forms/EmailPrefToggle';
+import ProfileHeader from '@/components/profile/ProfileHeader';
 
 export const metadata = { title: 'Profile — Teacher Connect' };
 
@@ -20,6 +21,7 @@ export default async function TeacherProfile() {
   return (
     <div className="max-w-3xl space-y-8">
       <h1 className="text-3xl font-extrabold">Your teaching profile</h1>
+      <ProfileHeader userId={user.id} name={profile?.full_name} url={profile?.avatar_url} />
       <VerificationPanel userId={user.id} status={tp?.verification} docs={docs || []} />
       <BaseLocationCard has={!!base} />
       <TeacherProfileForm userId={user.id} user={{ ...profile, phone: u?.phone }} tp={tp || {}} allSubjects={allSubjects || []}
